@@ -33,5 +33,5 @@ node default {
 
 node 'adumont.puppetlabs.vm' {
   include system_users
-  include system_users::admin
+  include system_users::admins
 }
