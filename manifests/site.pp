@@ -30,3 +30,8 @@ node default {
   notify { "Hello ${fqdn}": }
   # hola!
 }
+
+node 'adumont.puppetlabs.vm' {
+  include system_users
+  include system_users::admin
+}
