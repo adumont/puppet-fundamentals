@@ -28,4 +28,5 @@ node default {
   # Example:
   #   class { 'my_class': }
   notify { "Hello ${fqdn}": }
+  # hola!
 }
