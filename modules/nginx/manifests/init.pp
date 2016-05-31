@@ -43,16 +43,41 @@
 # Copyright 2016 Your name here, unless otherwise noted.
 #
 class nginx {
-  $docroot = '/var/www'
-
-  case $::kernel {
-    'Linux', 'Windows': { }
-    default: { fail("Unsupported Kernel : ${::kernel}") }
-  }
-
   case $::osfamily {
-    'RedHat', 'Debian', 'Windows': {
-      $nginx_conf_source="nginx-${::osfamily}.conf"
+    'Debian': {
+      $package = "nginx"
+      $owner = "root"
+      $group = "root"
+      $docroot = "/var/www"
+      $confdir = "/etc/nginx"
+      $confd_dir = "/etc/nginx/conf.d"
+      $logs_dir = "/var/log/nginx"
+      $service = "nginx"
+      $runas = "www-data"
+    }
+
+    'RedHat': {
+      $package = "nginx"
+      $owner = "root"
+      $group = "root"
+      $docroot = "/var/www"
+      $confdir = "/etc/nginx"
+      $confd_dir = "/etc/nginx/conf.d"
+      $logs_dir = "/var/log/nginx"
+      $service = "nginx"
+      $runas = "nginx"
+    }
+
+    'Windows': {
+      $package = "nginx-service"
+      $owner = "Administrator"
+      $group = "Administrators"
+      $docroot = "C:/ProgramData/nginx/html"
+      $confdir = "C:/ProgramData/nginx/conf"
+      $confd_dir = "C:/ProgramData/nginx/conf.d"
+      $logs_dir = "C:/ProgramData/nginx/logs"
+      $service = "nginx"
+      $runas = "nobody"
     }
 
     default: { fail("Unsupported OS family: ${::osfamily}") }
@@ -73,15 +98,15 @@ class nginx {
     mode   => '0755',
   }
 
-  file { "/etc/nginx/conf.d/default.conf":
+  file { "${confd_dir}/default.conf":
     ensure => file,
     source => "puppet:///modules/nginx/default-${::kernel}.conf",
     require => Package['nginx'],
   }
 
-  file { "/etc/nginx/nginx.conf":
+  file { "${confdir}/nginx.conf":
     ensure => file,
-    source => "puppet:///modules/nginx/${nginx_conf_source}"
+    source => "puppet:///modules/nginx/nginx-${::osfamily}.conf"
   }
 
   file { "$docroot/index.html":
