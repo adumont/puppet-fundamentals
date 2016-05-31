@@ -43,23 +43,37 @@
 # Copyright 2016 Your name here, unless otherwise noted.
 #
 class nginx {
+  $docroot = '/var/www'
 
   package { 'nginx':
     ensure => latest
   }
 
-  file { '/usr/share/nginx/html':
+  file { $docroot:
     ensure => directory,
   }
 
-  file { '/usr/share/nginx/html/index.html':
+  file { "/etc/nginx/conf.d/default.conf":
     ensure => file,
-    source => 'puppet:///modules/nginx/index.html'
+    source => 'puppet:///modules/nginx/default.conf',
+    require => Package['nginx'],
+  }
+
+  #file { "/etc/nginx/conf.d/virtual.conf":
+  #  ensure => file,
+  #  source => 'puppet:///modules/nginx/virtual.conf'
+  #}
+
+  file { "$docroot/index.html":
+    ensure  => file,
+    source  => 'puppet:///modules/nginx/index.html',
+    require => Package["nginx"],
   }
 
   service { 'nginx':
-    ensure =>  'running',
-    enable =>  'true',
+    ensure    =>  running,
+    enable    =>  true,
+    subscribe => File["/etc/nginx/conf.d/default.conf"],
   }
 
 }
