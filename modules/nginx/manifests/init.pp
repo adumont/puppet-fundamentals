@@ -57,7 +57,7 @@ class nginx {
 
   file { $docroot:
     ensure => directory,
-    mode   => 0755,
+    mode   => '0755',
   }
 
   file { "/etc/nginx/conf.d/default.conf":
