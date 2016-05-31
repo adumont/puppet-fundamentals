@@ -66,10 +66,10 @@ class nginx {
     require => Package['nginx'],
   }
 
-  #file { "/etc/nginx/conf.d/virtual.conf":
-  #  ensure => file,
-  #  source => 'puppet:///modules/nginx/virtual.conf'
-  #}
+  file { "/etc/nginx/nginx.conf":
+    ensure => file,
+    source => 'puppet:///modules/nginx/nginx.conf'
+  }
 
   file { "$docroot/index.html":
     ensure  => file,
