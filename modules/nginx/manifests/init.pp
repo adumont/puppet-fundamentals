@@ -45,6 +45,19 @@
 class nginx {
   $docroot = '/var/www'
 
+  case $::kernel {
+    'Linux', 'Windows': { }
+    default: { fail("Unsupported Kernel : ${::kernel}") }
+  }
+
+  case $::osfamily {
+    'RedHat', 'Debian', 'Windows': {
+      $nginx_conf_source="nginx-${::osfamily}.conf"
+    }
+
+    default: { fail("Unsupported OS family: ${::osfamily}") }
+  }
+
   File {
     owner => 'root',
     group => 'root',
@@ -62,13 +75,13 @@ class nginx {
 
   file { "/etc/nginx/conf.d/default.conf":
     ensure => file,
-    source => 'puppet:///modules/nginx/default.conf',
+    source => "puppet:///modules/nginx/default-${::kernel}.conf",
     require => Package['nginx'],
   }
 
   file { "/etc/nginx/nginx.conf":
     ensure => file,
-    source => 'puppet:///modules/nginx/nginx.conf'
+    source => "puppet:///modules/nginx/${nginx_conf_source}"
   }
 
   file { "$docroot/index.html":
