@@ -45,12 +45,19 @@
 class nginx {
   $docroot = '/var/www'
 
+  File {
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
+  }
+
   package { 'nginx':
     ensure => latest
   }
 
   file { $docroot:
     ensure => directory,
+    mode   => 0755,
   }
 
   file { "/etc/nginx/conf.d/default.conf":
