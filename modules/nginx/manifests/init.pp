@@ -111,7 +111,8 @@ class nginx {
 
   file { "$docroot/index.html":
     ensure  => file,
-    source  => 'puppet:///modules/nginx/index.html',
+    #source  => 'puppet:///modules/nginx/index.html',
+    content  => template('nginx/index.html.erb'),
     require => Package["nginx"],
   }
 
