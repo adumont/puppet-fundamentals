@@ -56,33 +56,20 @@ class nginx inherits nginx::params {
     ensure => latest
   }
 
-  file { $docroot:
-    ensure => directory,
-    mode   => '0755',
-  }
-
-  file { "${confd_dir}/default.conf":
-    ensure => file,
-    content  => template('nginx/default.conf.erb'),
-    require => Package['nginx'],
-  }
-
   file { "${confdir}/nginx.conf":
     ensure => file,
     content  => template('nginx/nginx.conf.erb'),
     require => Package["nginx"],
   }
 
-  file { "$docroot/index.html":
-    ensure  => file,
-    content  => template('nginx/index.html.erb'),
-    require => Package["nginx"],
+  # we create a 'default' vhost
+  nginx::vhost { 'default' :
+    servername => $::fqdn,
   }
 
   service { 'nginx':
     ensure    =>  running,
     enable    =>  true,
-    subscribe => File["/etc/nginx/conf.d/default.conf"],
   }
 
 }
