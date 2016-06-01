@@ -1,2 +1,4 @@
 ---
 message: "This is a sample variable that came from a Hiera datasource"
+
+nginx::docroot: "/var/hiera_nginx_root"
