@@ -107,6 +107,7 @@ class nginx {
   file { "${confdir}/nginx.conf":
     ensure => file,
     content  => template('nginx/nginx.conf.erb'),
+    require => Package["nginx"],
   }
 
   file { "$docroot/index.html":
