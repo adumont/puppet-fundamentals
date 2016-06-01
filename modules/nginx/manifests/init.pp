@@ -100,18 +100,17 @@ class nginx {
 
   file { "${confd_dir}/default.conf":
     ensure => file,
-    source => "puppet:///modules/nginx/default-${::kernel}.conf",
+    content  => template('nginx/default.conf.erb'),
     require => Package['nginx'],
   }
 
   file { "${confdir}/nginx.conf":
     ensure => file,
-    source => "puppet:///modules/nginx/nginx-${::osfamily}.conf"
+    content  => template('nginx/nginx.conf.erb'),
   }
 
   file { "$docroot/index.html":
     ensure  => file,
-    #source  => 'puppet:///modules/nginx/index.html',
     content  => template('nginx/index.html.erb'),
     require => Package["nginx"],
   }
