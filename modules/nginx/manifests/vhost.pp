@@ -1,7 +1,7 @@
 # This is a defined resource, not a class
 define nginx::vhost (
   $port = '80',
-  $vdocroot = "$::nginx::docroot/$title",
+  $docroot = "/var/www-$title",
   $servername = $title,
 ) {
 
@@ -12,12 +12,12 @@ define nginx::vhost (
     notify  => Service['nginx'],
   }
 
-  file { $vdocroot:
+  file { $docroot:
     ensure => directory,
     mode   => '0755',
   }
 
-  file { "$vdocroot/index.html":
+  file { "$docroot/index.html":
     ensure  => file,
     content  => template('nginx/index.html.erb'),
     require => Package["nginx"],

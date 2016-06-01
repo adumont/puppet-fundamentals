@@ -72,14 +72,21 @@ class nginx (
     require => Package["nginx"],
   }
 
-  file { "$::nginx::docroot":
-    ensure => directory,
-    mode   => '0755',
+  # remove default.conf file installed by package by default...
+  file { "${confd_dir}/default.conf":
+    ensure => absent,
+    require => Package["nginx"],
   }
+
+  #file { "$docroot":
+    #ensure => directory,
+    #mode   => '0755',
+  #}
 
   # we create a 'default' vhost
   nginx::vhost { 'default' :
     servername => $::fqdn,
+    docroot => $docroot,
   }
 
   service { 'nginx':

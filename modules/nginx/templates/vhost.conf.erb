@@ -14,7 +14,7 @@ server {
     include <%= @confdir %>/default.d/*.conf;
 
     location / {
-        root   <%= @vdocroot %>;
+        root   <%= @docroot %>;
         index  index.html index.htm;
     }
 

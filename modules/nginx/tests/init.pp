@@ -10,7 +10,7 @@
 # https://docs.puppetlabs.com/guides/tests_smoke.html
 #
 
-#include ::nginx
-class { 'nginx':
-  docroot => '/var/nginxdata',
-}
+include ::nginx
+#class { 'nginx':
+#  docroot => '/var/nginxdata',
+#}
