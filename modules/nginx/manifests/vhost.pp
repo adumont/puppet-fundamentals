@@ -1,11 +1,11 @@
 # This is a defined resource, not a class
 define nginx::vhost (
   $port = '80',
-  $vdocroot = "$::nginx::params::docroot/$title",
+  $vdocroot = "$::nginx::docroot/$title",
   $servername = $title,
 ) {
 
-  file { "${::nginx::params::confd_dir}/${servername}.conf":
+  file { "${::nginx::confd_dir}/${servername}.conf":
     ensure  => file,
     content => template("nginx/vhost.conf.erb"),
     require => Package['nginx'],

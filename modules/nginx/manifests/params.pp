@@ -44,4 +44,6 @@ class nginx::params {
     default: { fail("Unsupported OS family: ${::osfamily}") }
   }
 
+  $port = 80
+
 }

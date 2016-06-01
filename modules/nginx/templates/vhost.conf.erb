@@ -3,7 +3,7 @@
 # Created with template from puppet
 #
 server {
-    listen       <%= @port %> <% if @title == 'default' %>default_server<% end %>;
+    listen       <%= @port %><% if @title == 'default' %> default_server<% end %>;
     server_name  <%= @servername %>;
 
     #charset koi8-r;

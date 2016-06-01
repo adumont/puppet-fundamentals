@@ -9,4 +9,8 @@
 # Learn more about module testing here:
 # https://docs.puppetlabs.com/guides/tests_smoke.html
 #
-include ::nginx
+
+#include ::nginx
+class { 'nginx':
+  docroot => '/var/nginxdata',
+}

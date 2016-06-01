@@ -42,8 +42,18 @@
 #
 # Copyright 2016 Your name here, unless otherwise noted.
 #
-class nginx inherits nginx::params {
-  $port = 80
+class nginx (
+  $package = $::nginx::params::package,
+  $owner = $::nginx::params::owner,
+  $group = $::nginx::params::group,
+  $port = $::nginx::params::port,
+  $docroot = $::nginx::params::docroot,
+  $confdir = $::nginx::params::confdir,
+  $confd_dir = $::nginx::params::confd_dir,
+  $logs_dir = $::nginx::params::logs_dir,
+  $service = $::nginx::params::service,
+  $runas = $::nginx::params::runas,
+) inherits nginx::params {
   $servername = "_"
 
   File {
@@ -60,6 +70,11 @@ class nginx inherits nginx::params {
     ensure => file,
     content  => template('nginx/nginx.conf.erb'),
     require => Package["nginx"],
+  }
+
+  file { "$::nginx::docroot":
+    ensure => directory,
+    mode   => '0755',
   }
 
   # we create a 'default' vhost
