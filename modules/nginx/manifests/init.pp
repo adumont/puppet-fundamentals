@@ -53,7 +53,6 @@ class nginx {
       $confd_dir = "/etc/nginx/conf.d"
       $logs_dir = "/var/log/nginx"
       $service = "nginx"
-      $runas = "www-data"
     }
 
     'RedHat': {
@@ -65,7 +64,6 @@ class nginx {
       $confd_dir = "/etc/nginx/conf.d"
       $logs_dir = "/var/log/nginx"
       $service = "nginx"
-      $runas = "nginx"
     }
 
     'Windows': {
@@ -77,10 +75,17 @@ class nginx {
       $confd_dir = "C:/ProgramData/nginx/conf.d"
       $logs_dir = "C:/ProgramData/nginx/logs"
       $service = "nginx"
-      $runas = "nobody"
     }
 
     default: { fail("Unsupported OS family: ${::osfamily}") }
+  }
+
+  # Example of selector construction:
+
+  $runas = $::osfamily ? {
+    'Debian'  => "www-data",
+    'Windows' => "nobody",
+    default  => "nginx",
   }
 
   File {
